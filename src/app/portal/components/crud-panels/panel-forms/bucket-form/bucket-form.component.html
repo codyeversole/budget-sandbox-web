@@ -1,0 +1,116 @@
+<div *ngIf="!positive" class="flex flex-col md:flex-row gap-8 md:items-center mb-8">
+  <div><i class="fa-solid fa-square-minus text-red-800 fa-xl"></i> This bucket is for negative accounts (credit card account, loan, etc...)</div>
+  <div class="btn-text text-sm" (click)="togglePositive()">Change to positive bucket</div>
+</div>
+
+<div *ngIf="positive" class="flex flex-col md:flex-row gap-8 md:items-center mb-8">
+  <div><i class="fa-solid fa-square-plus text-green-800 fa-xl"></i> This bucket is for positive accounts (checking account, savings account, etc...)</div>
+  <div class="btn-text text-sm" (click)="togglePositive()">Change to negative bucket</div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="emitSave()" class="flex flex-col gap-4">
+
+  <div class="flex flex-col md:flex-row gap-4">
+    <div class="w-full">
+      <div class="form-label">Description</div>
+      <div>
+        <input type="text" placeholder="Description" formControlName="description">
+        <div class="validation-message" *ngIf="form.get('description')?.touched && form.get('description')?.errors?.['required']">Description is required</div>
+      </div>
+    </div>
+  
+    <div class="w-full">
+      <div class="form-label">Balance</div>
+      <div>
+        <input type="string" formControlName="balanceFormatted" [imask]="currencyFormMaskOptions">
+        <div class="validation-message" *ngIf="form.get('balance')?.touched && form.get('balance')?.errors?.['required']">Balance is required</div>
+      </div>
+    </div>
+
+    <div class="w-full">
+      <div class="form-label">Goal Balance</div>
+      <div>
+        <input type="string" formControlName="goalBalanceFormatted" [imask]="currencyFormMaskOptions">
+      </div>
+    </div>
+
+    
+    <div class="w-full">
+      <div>
+        <label>
+          <div class="form-label">Goal Achieved</div>
+          <input type="checkbox" formControlName="goalAchieved">
+        </label>
+      </div>
+    </div>
+
+    <div class="w-full">
+      <div>
+        <label>
+          <div class="form-label">Archived</div>
+          <input type="checkbox" formControlName="archived">
+        </label>
+      </div>
+    </div>
+  
+  </div>
+
+  <div class="validation-message" *ngIf="form.touched && form.errors?.['accountBuckets']">All amounts for related accounts must equal the bucket balance</div>
+
+  <div class="mt-8">
+
+    <div class="flex flex-col md:flex-row gap-8 md:items-center mb-8 w-full">
+      <div class="text-lg">Related Accounts</div>
+      <div class="btn-text text-sm" (click)="addNewAccount()">Add account</div>
+      <div class="flex-grow md:text-right">{{allocatedRemainderAmount ?? '' | imask:currencyFormMaskOptions}} / {{allocatedRemainderPercent ?? '' | imask:percentMaskOptions}} left to allocate to accounts</div>
+    </div>
+  
+    <ng-container formArrayName="accountBuckets">
+      <ng-container *ngFor="let accountForm of accountsFormArray.controls; let i = index">
+  
+        <div [formGroup]="accountForm" class="flex flex-col md:flex-row gap-4 w-full">
+
+          <i class="fa-solid fa-trash fa-xl text-red-800 cursor-pointer self-center" (click)="removeAccount(i)"></i>
+  
+          <div class="w-full">
+            <div class="form-label">Account</div>
+            <div>
+              <select formControlName="accountId">
+                <option [ngValue]="null">Choose account...</option>
+                <option *ngFor="let account of filteredAccounts$ | async" [value]="account.accountId">{{ account.description }} {{account.balance.toString() | imask:currencyFormMaskOptions}}</option>
+              </select>
+              <div class="validation-message" *ngIf="accountForm.get('accountId')?.touched && accountForm.get('accountId')?.errors?.['required']">Account is required</div>
+            </div>
+          </div>
+  
+          <div *ngIf="!accountForm.controls.usePercent.value" class="w-full">
+            <div class="flex flex-row gap-8 items-center">
+              <div class="form-label">Amount</div>
+              <div class="btn-text text-sm" (click)="toggleAccountUsePercent(i)">Use percent instead</div>
+            </div>
+            <div>
+              <input type="text" placeholder="Amount" formControlName="amountFormated" min="0" [imask]="currencyFormMaskOptions">
+              <div class="validation-message" *ngIf="accountForm.get('amount')?.touched && accountForm.get('amount')?.errors?.['required']">Amount is required</div>
+            </div>
+          </div>
+    
+          <div *ngIf="accountForm.controls.usePercent.value" class="w-full">
+            <div class="flex flex-row gap-8 items-center">
+              <div class="form-label">Percent</div>
+              <div class="btn-text text-sm" (click)="toggleAccountUsePercent(i)">Use amount instead</div>
+            </div>
+            <div>
+              <input type="text" placeholder="100%" formControlName="percentFormated"  [imask]="percentMaskOptions">
+              <div class="validation-message" *ngIf="accountForm.get('percent')?.touched && accountForm.get('percent')?.errors?.['required']">Percent is required</div>
+            </div>
+          </div>
+  
+        </div>
+  
+      </ng-container>
+    </ng-container>  
+
+  </div>
+
+  <input [style.display]="'none'" type="submit">
+</form>

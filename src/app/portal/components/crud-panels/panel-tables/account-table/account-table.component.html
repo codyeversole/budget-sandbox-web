@@ -1,0 +1,22 @@
+<div *ngIf="!accountResults$ || (accountResults$ | async)?.length === 0">No accounts found. Add an account to get started.</div>
+<table *ngIf="accountResults$ && ((accountResults$ | async)?.length ?? 0) > 0">
+  <tr>
+    <td></td>
+    <td class="text-right lg:px-16">Balance</td>
+    <td>Account</td>    
+    <td>Account balance after buckets</td>
+    <td>Total bucket balance</td>
+    <td></td>
+  </tr>
+  <tr *ngFor="let account of accountResults$ | async">
+    <td class="w-1 whitespace-nowrap">
+      <i *ngIf="account.positive" class="fa-solid fa-square-plus text-green-800 fa-xl"></i>
+      <i *ngIf="!account.positive" class="fa-solid fa-square-minus text-red-800 fa-xl"></i>
+    </td>
+    <td class="text-right w-1 whitespace-nowrap lg:px-16">{{ account.balance.toString() | imask:currencyMaskOptions }}</td>
+    <td>{{ account.description }}</td>
+    <td class="">{{ account.accountBalanceAfterBuckets.toString() | imask:currencyMaskOptions }}</td>
+    <td class="">{{ account.totalBucketBalance.toString() | imask:currencyMaskOptions }}</td>
+    <td><a class="btn-primary" (click)="emitEdit(account)">Edit</a></td>
+  </tr>
+</table>    

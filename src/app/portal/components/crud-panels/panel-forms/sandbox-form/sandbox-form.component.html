@@ -1,0 +1,7 @@
+<form [formGroup]="form" (ngSubmit)="emitSave()">
+  <div>Add sandbox</div>
+  <div>
+    <input type="text" placeholder="Sandbox name" formControlName="description">
+    <div class="validation-message" *ngIf="form.get('description')?.touched && form.get('description')?.errors?.['required']">Sandbox name is required</div>
+  </div>
+</form>

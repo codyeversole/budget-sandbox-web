@@ -1,0 +1,13 @@
+<div class="py-8 px-2 md:py-16 md:px-8">
+
+  <div class="grid grid-cols-1 gap-8">  
+    <div>
+      <div class="text-xl">Dashboard</div>
+      <app-report-cash-flow></app-report-cash-flow>
+    </div>
+    <app-dynamic-crud-panel (changed)="sandboxChanged()" [configuration]="panelConfigurationService.sandboxPanelConfiguration"></app-dynamic-crud-panel>
+  </div>
+  
+</div>
+
+

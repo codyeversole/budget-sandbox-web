@@ -1,0 +1,13 @@
+<div *ngIf="!assets$ || (assets$ | async)?.length === 0">No assets found. Add an asset to get started.</div>
+<table *ngIf="assets$ && ((assets$ | async)?.length ?? 0) > 0">
+  <tr>
+    <td class="text-right lg:px-16">Value</td>
+    <td>Asset</td>
+    <td></td>
+  </tr>
+  <tr *ngFor="let asset of assets$ | async">
+    <td class="text-right w-1 whitespace-nowrap lg:px-16">{{ asset.amountValue.toString() | imask:currencyMaskOptions}}</td>
+    <td>{{ asset.description }}</td>
+    <td><a class="btn-primary" (click)="emitEdit(asset)">Edit</a></td>
+  </tr>
+</table>

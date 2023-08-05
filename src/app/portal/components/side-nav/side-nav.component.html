@@ -1,0 +1,11 @@
+<div class="side-nav-container">
+  <div class="bg-[#7f5539] p-6">
+    <div class="text-xl">{{sandboxService.currentSandbox?.description ?? 'No sandbox selected'}}</div>
+    <div *ngIf="sandboxService.currentSandbox?.description" class="text-sm">Current sandbox</div>
+  </div>
+  <div class="side-nav-btn" routerLink="./dashboard">Sandboxes <img class="max-h-6 cursor-pointer" src="/assets/images/BudgetSandboxIconWhite.svg"></div>
+  <div class="side-nav-btn" routerLink="./accounts">Accounts <i class="fa-solid fa-building-columns fa-lg"></i></div>
+  <div class="side-nav-btn" routerLink="./buckets">Buckets <i class="fa-solid fa-bucket fa-lg"></i></div>
+  <div class="side-nav-btn" routerLink="./assets">Assets <i class="fa-solid fa-sack-dollar fa-lg"></i></div>
+  <div class="side-nav-btn" routerLink="./cashflowitems">Cash Flow Items <i class="fa-solid fa-money-check-dollar fa-lg"></i></div>
+</div>

@@ -1,0 +1,14 @@
+<div *ngIf="!sandboxes$ || (sandboxes$ | async)?.length === 0">No sandboxes found. Add a sandbox to get started.</div>
+<table *ngIf="sandboxes$ && ((sandboxes$ | async)?.length ?? 0) > 0">
+  <tr>
+    <td>Name</td>
+    <td></td>
+  </tr>
+  <tr *ngFor="let sandbox of sandboxes$ | async">
+    <td>{{sandbox.description}}</td>
+    <td class="flex flex-row gap-4">
+      <a class="btn-primary" (click)="emitEdit(sandbox)">Edit</a>
+      <a *ngIf="sandbox.sandboxId !== sandboxService.currentSandbox?.sandboxId" class="btn-primary" (click)="setSelectedSandbox(sandbox)">Select sandbox</a>
+    </td>
+  </tr>
+</table>    

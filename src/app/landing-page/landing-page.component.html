@@ -1,0 +1,102 @@
+<div class="hidden md:flex justify-between py-4 px-12 bg-white">
+  <div class="flex gap-2 items-center w-full">
+    <img class="max-h-10 cursor-pointer" src="/assets/images/BudgetSandboxIcon.svg" routerLink="/">
+    <div class="text-2xl cursor-pointer" routerLink="/">Budget Sandbox</div>
+  </div>
+  <div class="flex gap-2 justify-end items-center w-full">
+    <div class="nav-text">{{userService.userProfile?.username}}</div>
+    <a *ngIf="!userService.isLoggedIn" (click)="signIn()" class="btn">Sign in</a>
+    <a *ngIf="!userService.isLoggedIn" class="btn" (click)="register()">Create account</a>
+    <a *ngIf="userService.isLoggedIn" class="btn" routerLink="./portal/dashboard">Dashboard</a>
+    <a *ngIf="userService.isLoggedIn" (click)="signOut()" class="btn">Sign out</a>
+  </div>
+</div>
+
+<div class="flex flex-col md:hidden">
+  <div class="flex justify-between gap-2 items-center w-full bg-white p-4">
+    <div class="flex flex-row gap-2 grow">
+      <img class="max-h-10 cursor-pointer" src="/assets/images/BudgetSandboxIcon.svg" routerLink="/">
+      <div class="text-2xl cursor-pointer" routerLink="/">Budget Sandbox</div>
+    </div>
+    <div class="shrink">
+      <i (click)="toggleMenu()" class="fa-solid fa-bars fa-xl p-4"></i>
+    </div>
+  </div>
+  <div *ngIf="showMenu" class="flex flex-col justify-center gap-2 items-center w-full bg-[#af5500] text-white">
+    <div *ngIf="userService.isLoggedIn" class="side-nav-btn">{{userService.userProfile?.username}}</div>
+    <a *ngIf="!userService.isLoggedIn" (click)="signIn()" class="side-nav-btn">Sign in</a>
+    <a *ngIf="!userService.isLoggedIn" class="side-nav-btn" (click)="register()">Create account</a>
+    <a *ngIf="userService.isLoggedIn" class="side-nav-btn" routerLink="./portal/dashboard">Dashboard</a>
+    <a *ngIf="userService.isLoggedIn" (click)="signOut()" class="side-nav-btn">Sign out</a>
+  </div>
+</div>
+
+<img class="hidden md:flex" src="/assets/images/Asset 2.svg">
+<img class="md:hidden" src="/assets/images/Asset 3.svg">
+
+<div class="section">
+  <div class="flex flex-col gap-8 md:gap-20 items-center">
+    <div class="selling-point">Create multiple budgets</div>
+    <div class="selling-point-divider"></div>
+    <div class="selling-point">Evaluate cash flow</div>
+    <div class="selling-point-divider"></div>
+    <div class="selling-point">Set goals and organize financial accounts</div>
+    <div class="selling-point-divider"></div>
+    <div class="selling-point">Grant others access to your budgets</div>
+  </div>
+</div>
+
+<div class="section bg-white">
+  <div class="sub-section text-center">
+    <a *ngIf="!userService.isLoggedIn" class="btn-primary md:text-xl" (click)="register()">Create a free account</a>
+    <a *ngIf="userService.isLoggedIn" class="btn-primary md:text-xl" routerLink="./portal/dashboard">Go to your dashboard</a>
+  </div>
+  <div class="sub-section text-center">
+    <a *ngIf="!userService.isLoggedIn" class="btn-primary md:text-xl" (click)="signIn()">Sign in</a>
+    <a *ngIf="userService.isLoggedIn" class="btn-primary md:text-xl" (click)="signOut()">Sign out</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="flex items-start justify-start flex-col md:flex-row gap-16 md:gap-16 sub-section">
+    <div class="sub-section flex flex-col items-center gap-8">
+      <div class="text-lg md:text-2xl">Open source software</div>
+      <div class="md:text-xl">
+        See the project on GitHub
+      </div>
+      <div>
+        <img class="w-28" src="/assets/images/github.svg">
+      </div>
+    </div>
+    <div class="flex md:hidden selling-point-divider"></div>
+    <div class="sub-section flex flex-col items-center gap-8">
+      <div class="text-lg md:text-2xl text-center md:text-left">Developed and maintained by Cody Eversole</div>
+      <div class="md:text-xl">Indie Hacker / Software Engineer</div>
+      <div>
+        <img class="w-40" src="/assets/images/ProfilePicture.svg">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="selling-point-divider"></div>
+<div class="footer">
+  <div class="flex items-start justify-start flex-col md:flex-row gap-8 md:gap-16 sub-section">
+    <div class="sub-section flex flex-col gap-8 items-center">
+      <div>
+        <div class="text-lg text-center">Have a question, comment, or suggestion?</div>
+        <div class="text-lg text-center">Send an email!</div>
+      </div>
+      <div class="text-xl">support@budgetsandbox.com</div>
+    </div>
+    <div class="sub-section flex flex-col items-center gap-8">
+      <img class="w-52" src="/assets/images/BudgetSandboxIcon.svg">
+    </div>
+  </div>
+  <div class="flex flex-col md:flex-row gap-8 md:mt-16 items-center">
+    <div class="text-sm">Copyright &copy; Cody Eversole</div>
+    <div class="text-sm">Terms and Conditions</div>
+    <div class="text-sm">Privacy Policy</div>
+  </div>
+</div>
+

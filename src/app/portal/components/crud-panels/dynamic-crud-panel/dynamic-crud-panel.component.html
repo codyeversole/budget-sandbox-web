@@ -1,0 +1,32 @@
+<div class="panel">
+  <div class="panel-header">
+    <div><i class="fa-solid {{configuration.icon}}"></i> {{ configuration.pascalCaseItemPluralName }}</div>
+    <div *ngIf="!showPanel" class="icon-group" (click)="togglePanel()"><i class="fa-solid fa-angle-down"></i> Expand</div>
+    <div *ngIf="showPanel" class="icon-group" (click)="togglePanel()"><i class="fa-solid fa-angle-up"></i> Hide</div>
+  </div>
+  <ng-container *ngIf="showPanel && !addingOrEditing">
+    <div class="panel-buttons">
+      <a class="btn-primary" (click)="add()">Add {{ configuration.pascalCaseItemName }}</a>
+    </div>
+    <div class="panel-content">
+      <ng-template appPanelTableHost></ng-template>     
+    </div>
+  </ng-container>
+  <ng-container *ngIf="showPanel && addingOrEditing">
+    <div class="panel-buttons">
+      <a class="btn-primary" (click)="save()">Save</a>
+      <a class="btn-secondary" (click)="cancel()">Cancel</a>
+      <a *ngIf="(editId ?? 0) > 0" class="btn-delete" (click)="showDelete = true">Delete</a>
+    </div>
+    <div class="panel-content">
+      <ng-template appPanelFormHost></ng-template>
+    </div>
+    <div *ngIf="showDelete" class="panel-confirm">
+      <div>Are you sure you want to delete this {{ configuration.pascalCaseItemName.toLocaleLowerCase() }}?</div>
+      <div class="confirm-buttons">
+        <div class="btn-delete" (click)="delete(editId ?? 0)">Yes, delete</div>
+        <div class="btn-secondary" (click)="showDelete = false">No, nevermind</div>
+      </div>
+    </div>
+  </ng-container>
+</div>

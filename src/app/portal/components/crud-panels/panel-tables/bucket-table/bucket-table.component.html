@@ -1,0 +1,28 @@
+<div *ngIf="!bucketResults$ || (bucketResults$ | async)?.length === 0">No buckets found. Add a bucket to get started.</div>
+<table *ngIf="bucketResults$ && ((bucketResults$ | async)?.length ?? 0) > 0">
+  <tr>
+    <td></td>
+    <td class="text-right lg:px-16">Balance</td>
+    <td>Bucket</td>
+    <td>Goal Balance</td>
+    <td>Goal Achieved</td>
+    <td>Archived</td>
+    <td>Accounts</td>
+    <td></td>
+  </tr>
+  <tr *ngFor="let bucket of bucketResults$ | async">
+    <td class="w-1 whitespace-nowrap">
+      <i *ngIf="bucket.positive" class="fa-solid fa-square-plus text-green-800 fa-xl"></i>
+      <i *ngIf="!bucket.positive" class="fa-solid fa-square-minus text-red-800 fa-xl"></i>
+    </td>
+    <td class="text-right w-1 whitespace-nowrap lg:px-16">{{ bucket.balance.toString() | imask:currencyMaskOptions}}</td>
+    <td>{{ bucket.description }}</td>
+    <td>{{ bucket.goalBalance?.toString() ?? '0' | imask:currencyMaskOptions }}</td>
+    <td>{{ bucket.goalAchieved ? 'Yes' : 'No' }}</td>
+    <td>{{ bucket.archived ? 'Yes' : 'No' }}</td>
+    <td>
+      <div *ngFor="let account of bucket.accountBuckets">{{account.account?.description}}</div>
+    </td>
+    <td><a class="btn-primary" (click)="emitEdit(bucket)">Edit</a></td>
+  </tr>
+</table>

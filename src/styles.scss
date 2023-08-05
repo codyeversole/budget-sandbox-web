@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import 'ngx-toastr/toastr';
+
+@font-face {
+    font-family: SourceCodePro-Regular;
+    src: url(./fonts/SourceCodePro-Regular.ttf);
+}
+
+@font-face {
+    font-family: Wix;
+    src: url(./fonts/WixMadeforDisplay-Regular.ttf);
+}
+
+html {
+    font-family: SourceCodePro-Regular;
+    font-size: 14px;
+    background-color: #f2f2f2;
+    color: #000;
+}
+
+h1 {
+    @apply text-2xl;
+}
+
+.btn {
+    @apply px-4 py-2 hover:underline cursor-pointer text-lg;
+}
+
+.nav-text {
+    @apply px-4 py-2 text-lg;
+}
+
+.panel {
+    @apply pb-4 bg-white rounded-md flex flex-col gap-4 shadow p-4 overflow-auto;
+
+    .panel-header {
+        @apply flex flex-row gap-4 items-center justify-between p-4 text-lg;
+    }
+
+    .panel-content {
+        @apply p-4;
+    }
+
+    .panel-buttons {
+        @apply flex flex-row flex-wrap gap-4 px-4;
+    }
+
+    .panel-confirm {
+        @apply  p-4 flex flex-col gap-4;
+
+        .confirm-buttons {
+            @apply flex flex-row justify-between;
+        }
+    }
+}
+
+.btn-primary {
+    @apply px-4 py-1 cursor-pointer border-2 border-amber-400 bg-amber-400 rounded;
+}
+
+.btn-secondary {
+    @apply px-4 py-1 cursor-pointer border-2 border-amber-400 rounded;
+}
+
+.btn-delete {
+    @apply px-4 py-1 cursor-pointer border-2 border-orange-400 bg-orange-400 rounded;
+}
+
+.btn-text {
+    @apply underline underline-offset-4 text-blue-700 cursor-pointer;
+}
+
+.icon-group {
+    @apply flex flex-row items-center gap-2 cursor-pointer;
+}
+
+
+table {
+    table-layout: auto;
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Wix;
+
+    td {
+        @apply p-4;
+    }
+
+    > tr:nth-child(even) {
+        @apply bg-stone-100;
+    }
+
+}
+
+input {
+    @apply p-2 border-slate-200 border-2 rounded focus:outline-none w-full;
+    font-family: Wix;
+}
+
+select {
+    @apply p-2 border-slate-200 border-2 rounded focus:outline-none w-full;
+    font-family: Wix;
+}
+
+.validation-message {
+    @apply text-red-900;
+}

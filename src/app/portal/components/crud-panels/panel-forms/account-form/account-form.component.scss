@@ -1,0 +1,17 @@
+.balance-container {
+    @apply flex flex-col justify-center px-6 py-2 shadow text-center bg-[#679436] text-white rounded-lg;
+
+    .balance-amount {
+        @apply text-xl;
+        font-family: Wix;
+    }
+}
+
+.bucket-container {
+    @apply flex flex-row justify-between items-center gap-4 px-6 py-2 bg-stone-200 rounded;
+
+    .balance-amount {
+        @apply text-lg;
+        font-family: Wix;
+    }
+}

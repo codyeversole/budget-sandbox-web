@@ -1,0 +1,11 @@
+services:  
+  budget-sandbox_web:
+    build:
+      context: .
+    networks:  
+      - nginx_network
+    expose: 
+      - "80"
+networks:
+  nginx_network:
+    external: true

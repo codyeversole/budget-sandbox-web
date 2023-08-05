@@ -1,0 +1,30 @@
+<div *ngIf="!cashFlowItemResults$ || (cashFlowItemResults$ | async)?.length === 0">No cash flow items found. Add a cash flow item to get started.</div>
+<table *ngIf="cashFlowItemResults$ && ((cashFlowItemResults$ | async)?.length ?? 0) > 0">
+  <tr>
+    <td></td>
+    <td class="text-right lg:px-16">Amount</td>
+    <td>Description</td>
+    <td>Frequency</td>
+    <td>Accounts</td>
+    <td>Buckets</td>
+    <td>Asset</td>
+    <td></td>
+  </tr>
+  <tr *ngFor="let cashFlowItem of cashFlowItemResults$ | async">
+    <td class="w-1 whitespace-nowrap">
+      <i *ngIf="cashFlowItem.positive" class="fa-solid fa-square-plus text-green-800 fa-xl"></i>
+      <i *ngIf="!cashFlowItem.positive" class="fa-solid fa-square-minus text-red-800 fa-xl"></i>
+    </td>
+    <td class="text-right w-1 whitespace-nowrap lg:px-16">{{ cashFlowItem.amount.toString() | imask:currencyFormMaskOptions}}</td>
+    <td>{{ cashFlowItem.description }}</td>
+    <td>{{ cashFlowItem.frequency }}</td>
+    <td>
+      <div *ngFor="let account of cashFlowItem.cashFlowItemAccounts">{{account.account?.description}}</div>
+    </td>
+    <td>
+      <div *ngFor="let bucket of cashFlowItem.cashFlowItemBuckets">{{bucket.bucket?.description}}</div>
+    </td>
+    <td>{{cashFlowItem.asset?.description ?? ''}}</td>
+    <td><a class="btn-primary" (click)="emitEdit(cashFlowItem)">Edit</a></td>
+  </tr>
+</table>

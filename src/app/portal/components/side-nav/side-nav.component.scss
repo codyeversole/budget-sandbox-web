@@ -1,0 +1,7 @@
+.side-nav-container {
+    @apply bg-[#a56336] m-2 rounded-lg text-white overflow-hidden mt-16;
+
+    .side-nav-btn {
+        @apply px-8 py-4 hover:bg-[#c1723e] cursor-pointer flex flex-row gap-4 items-center;
+    }
+}

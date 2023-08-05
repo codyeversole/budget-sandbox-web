@@ -1,0 +1,177 @@
+<div *ngIf="!positive" class="flex flex-col md:flex-row gap-8 md:items-center mb-8">
+  <div><i class="fa-solid fa-square-minus text-red-800 fa-xl"></i> This is a negative cash flow item</div>
+  <div class="btn-text text-sm" (click)="togglePositive()">Change to positive cash flow item</div>
+</div>
+
+<div *ngIf="positive" class="flex flex-col md:flex-row gap-8 md:items-center mb-8">
+  <div><i class="fa-solid fa-square-plus text-green-800 fa-xl"></i> This is a positive cash flow item</div>
+  <div class="btn-text text-sm" (click)="togglePositive()">Change to negative cash flow item</div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="emitSave()" class="flex flex-col gap-4">
+
+  <div class="flex flex-col md:flex-row gap-4">
+    <div class="w-full">
+      <div class="form-label">Description</div>
+      <div>
+        <input type="text" placeholder="Description" formControlName="description">
+        <div class="validation-message" *ngIf="form.get('description')?.touched && form.get('description')?.errors?.['required']">Description is required</div>
+      </div>
+    </div>
+  
+    <div class="w-full">
+      <div class="form-label">Amount</div>
+      <div>
+        <input type="string" placeholder="Amount" formControlName="amountFormated" min="0" [imask]="currencyFormMaskOptions">
+        <div class="validation-message" *ngIf="form.get('amount')?.touched && form.get('amount')?.errors?.['required']">Amount is required</div>
+      </div>
+    </div>
+  
+    <div class="w-full">
+      <div class="form-label">Frequency</div>
+      <div>
+        <select formControlName="frequency">
+          <option [ngValue]="null">Choose frequency...</option>
+          <option [value]="CashFlowFrequency.Daily">{{ CashFlowFrequency.Daily }}</option>
+          <option [value]="CashFlowFrequency.Weekly">{{ CashFlowFrequency.Weekly }}</option>
+          <option [value]="CashFlowFrequency.BiWeekly">{{ CashFlowFrequency.BiWeekly }}</option>
+          <option [value]="CashFlowFrequency.SemiMonthly">{{ CashFlowFrequency.SemiMonthly }}</option>
+          <option [value]="CashFlowFrequency.Monthly">{{ CashFlowFrequency.Monthly }}</option>
+          <option [value]="CashFlowFrequency.Yearly">{{ CashFlowFrequency.Yearly }}</option>
+        </select>
+        <div class="validation-message" *ngIf="form.get('frequency')?.touched && form.get('frequency')?.errors?.['required']">Frequency is required</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="validation-message" *ngIf="form.touched && form.errors?.['accountsAndBuckets']">All amounts for related accounts and buckets must equal the cash flow item amount</div>
+
+  <div class="mt-8">
+
+    <div class="flex flex-col md:flex-row gap-8 md:items-center mb-8 w-full">
+      <div class="text-lg">Related Accounts</div>
+      <div class="btn-text text-sm" (click)="addNewAccountOrBucket('account')">Add account</div>
+      <div class="flex-grow md:text-right">{{allocatedRemainderAmount ?? '' | imask:currencyFormMaskOptions}} / {{allocatedRemainderPercent ?? '' | imask:percentMaskOptions}} left to allocate to accounts or buckets</div>
+    </div>
+  
+    <ng-container formArrayName="cashFlowItemAccounts">
+      <ng-container *ngFor="let accountForm of accountsFormArray.controls; let i = index">
+  
+        <div [formGroup]="accountForm" class="flex flex-col md:flex-row gap-4 w-full">
+
+          <i class="fa-solid fa-trash fa-xl text-red-800 cursor-pointer self-center" (click)="removeAccountOrBucket('account', i)"></i>
+  
+          <div class="w-full">
+            <div class="form-label">Account</div>
+            <div>
+              <select formControlName="accountId">
+                <option [ngValue]="null">Choose account...</option>
+                <option *ngFor="let account of accounts$ | async" [value]="account.accountId">{{ account.description }}</option>
+              </select>
+              <div class="validation-message" *ngIf="accountForm.get('accountId')?.touched && accountForm.get('accountId')?.errors?.['required']">Account is required</div>
+            </div>
+          </div>
+  
+          <div *ngIf="!accountForm.controls.usePercent.value" class="w-full">
+            <div class="flex flex-row gap-8 items-center">
+              <div class="form-label">Amount</div>
+              <div class="btn-text text-sm" (click)="toggleAccountOrBucketUsePercent('account', i)">Use percent instead</div>
+            </div>
+            <div>
+              <input type="text" placeholder="Amount" formControlName="amountFormated" min="0" [imask]="currencyFormMaskOptions">
+              <div class="validation-message" *ngIf="accountForm.get('amount')?.touched && accountForm.get('amount')?.errors?.['required']">Amount is required</div>
+            </div>
+          </div>
+    
+          <div *ngIf="accountForm.controls.usePercent.value" class="w-full">
+            <div class="flex flex-row gap-8 items-center">
+              <div class="form-label">Percent</div>
+              <div class="btn-text text-sm" (click)="toggleAccountOrBucketUsePercent('account', i)">Use amount instead</div>
+            </div>
+            <div>
+              <input type="text" placeholder="100%" formControlName="percentFormated"  [imask]="percentMaskOptions">
+              <div class="validation-message" *ngIf="accountForm.get('percent')?.touched && accountForm.get('percent')?.errors?.['required']">Percent is required</div>
+            </div>
+          </div>
+  
+        </div>
+  
+      </ng-container>
+    </ng-container>  
+
+  </div>
+
+  <div class="mt-8">
+
+    <div class="flex flex-col md:flex-row gap-8 md:items-center mb-8 w-full">
+      <div class="text-lg">Related Buckets</div>
+      <div class="btn-text text-sm" (click)="addNewAccountOrBucket('bucket')">Add bucket</div>
+    </div>
+  
+    <ng-container formArrayName="cashFlowItemBuckets">
+      <ng-container *ngFor="let bucketForm of bucketsFormArray.controls; let i = index">
+  
+        <div [formGroup]="bucketForm" class="flex flex-col md:flex-row gap-4 w-full">
+
+          <i class="fa-solid fa-trash fa-xl text-red-800 cursor-pointer self-center" (click)="removeAccountOrBucket('bucket', i)"></i>
+  
+          <div class="w-full">
+            <div class="form-label">Bucket</div>
+            <div>
+              <select formControlName="bucketId">
+                <option [ngValue]="null">Choose bucket...</option>
+                <option *ngFor="let bucket of buckets$ | async" [value]="bucket.bucketId">{{ bucket.description }}</option>
+              </select>
+              <div class="validation-message" *ngIf="bucketForm.get('bucketId')?.touched && bucketForm.get('bucketId')?.errors?.['required']">Bucket is required</div>
+            </div>
+          </div>
+  
+          <div *ngIf="!bucketForm.controls.usePercent.value" class="w-full">
+            <div class="flex flex-row gap-8 items-center">
+              <div class="form-label">Amount</div>
+              <div class="btn-text text-sm" (click)="toggleAccountOrBucketUsePercent('bucket', i)">Use percent instead</div>
+            </div>
+            <div>
+              <input type="text" placeholder="Amount" formControlName="amountFormated" min="0" [imask]="currencyFormMaskOptions">
+              <div class="validation-message" *ngIf="bucketForm.get('amount')?.touched && bucketForm.get('amount')?.errors?.['required']">Amount is required</div>
+            </div>
+          </div>
+    
+          <div *ngIf="bucketForm.controls.usePercent.value" class="w-full">
+            <div class="flex flex-row gap-8 items-center">
+              <div class="form-label">Percent</div>
+              <div class="btn-text text-sm" (click)="toggleAccountOrBucketUsePercent('bucket', i)">Use amount instead</div>
+            </div>
+            <div>
+              <input type="text" placeholder="100%" formControlName="percentFormated" [imask]="percentMaskOptions">
+              <div class="validation-message" *ngIf="bucketForm.get('percent')?.touched && bucketForm.get('percent')?.errors?.['required']">Percent is required</div>
+            </div>
+          </div>
+  
+        </div>
+  
+      </ng-container>
+    </ng-container>  
+
+  </div>
+
+  <div *ngIf="form.controls.positive.value" class="mt-8">
+
+    <div class="flex flex-row gap-8 items-center mb-8 w-full">
+      <div class="text-lg">Related Asset</div>
+    </div>
+  
+    <div class="w-full">
+      <div class="form-label">Asset</div>
+      <div>
+        <select formControlName="assetId">
+          <option [ngValue]="null">Choose asset...</option>
+          <option *ngFor="let asset of assets$ | async" [value]="asset.assetId">{{ asset.description }}</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+
+  <input [style.display]="'none'" type="submit">
+</form>

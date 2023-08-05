@@ -1,0 +1,31 @@
+<div *ngIf="reportCashFlow$ | async; let reportCashFlow">
+  <div class="mb-8">You are saving {{((reportCashFlow?.savePercentage ?? 0) * 100).toString() | imask:percentShortMaskOptions}} percent of your income</div>
+
+  <div class="border-b-2 border-stone-200 text-lg mb-4">Cash Flow</div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+    <div class="cash-flow-display" [ngClass]="(reportCashFlow?.dailyCashFlow ?? 0) >= 0 ? 'positive' : 'negative'">
+      <div class="cash-flow-display-title">Daily</div>
+      <div class="cash-flow-display-amount">
+        <i *ngIf="(reportCashFlow?.dailyCashFlow ?? 0) < 0" class="fa-solid fa-minus"></i> {{reportCashFlow?.dailyCashFlow?.toString() ?? '' | imask:currencyMaskOptions}}
+      </div>
+    </div>
+    <div class="cash-flow-display" [ngClass]="(reportCashFlow?.weeklyCashFlow ?? 0) >= 0 ? 'positive' : 'negative'">
+      <div class="cash-flow-display-title">Weekly</div>
+      <div class="cash-flow-display-amount">
+        <i *ngIf="(reportCashFlow?.weeklyCashFlow ?? 0) < 0" class="fa-solid fa-minus"></i> {{reportCashFlow?.weeklyCashFlow?.toString() ?? '' | imask:currencyMaskOptions}}
+      </div>
+    </div>
+    <div class="cash-flow-display" [ngClass]="(reportCashFlow?.monthlyCashFlow ?? 0) >= 0 ? 'positive' : 'negative'">
+      <div class="cash-flow-display-title">Monthly</div>
+      <div class="cash-flow-display-amount">
+        <i *ngIf="(reportCashFlow?.monthlyCashFlow ?? 0) < 0" class="fa-solid fa-minus"></i> {{reportCashFlow?.monthlyCashFlow?.toString() ?? '' | imask:currencyMaskOptions}}
+      </div>
+    </div>
+    <div class="cash-flow-display" [ngClass]="(reportCashFlow?.yearlyCashFlow ?? 0) >= 0 ? 'positive' : 'negative'">
+      <div class="cash-flow-display-title">Yearly</div>
+      <div class="cash-flow-display-amount">
+        <i *ngIf="(reportCashFlow?.yearlyCashFlow ?? 0) < 0" class="fa-solid fa-minus"></i> {{reportCashFlow?.yearlyCashFlow?.toString() ?? '' | imask:currencyMaskOptions}}
+      </div>
+    </div>
+  </div>
+</div>

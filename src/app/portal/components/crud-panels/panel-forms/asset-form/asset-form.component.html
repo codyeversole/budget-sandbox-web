@@ -1,0 +1,20 @@
+<form [formGroup]="form" (ngSubmit)="emitSave()" class="flex flex-col gap-4">
+
+  <div>
+    <div class="form-label">Asset</div>
+    <div>
+      <input type="text" placeholder="Asset" formControlName="description">
+      <div class="validation-message" *ngIf="form.get('description')?.touched && form.get('description')?.errors?.['required']">Asset is required</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="form-label">Value</div>
+    <div>
+      <input type="text" formControlName="amountValueFormatted" [imask]="currencyFormMaskOptions">
+      <div class="validation-message" *ngIf="form.get('amountValue')?.touched && form.get('amountValue')?.errors?.['required']">Value is required</div>
+    </div>
+  </div>
+
+  <input [style.display]="'none'" type="submit">
+</form>

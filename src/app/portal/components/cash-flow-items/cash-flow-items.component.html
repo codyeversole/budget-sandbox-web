@@ -1,0 +1,4 @@
+<div class="flex flex-col gap-8 py-8 px-2 md:py-16 md:px-8">
+    <app-report-cash-flow></app-report-cash-flow>
+    <app-dynamic-crud-panel (changed)="cashFlowItemsChanged()" [configuration]="panelConfigurationService.cashFlowItemPanelConfiguration"></app-dynamic-crud-panel>
+</div>

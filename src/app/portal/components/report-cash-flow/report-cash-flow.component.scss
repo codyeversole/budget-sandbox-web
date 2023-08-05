@@ -1,0 +1,20 @@
+.cash-flow-display {
+    @apply flex flex-col justify-center w-full text-white px-8 py-4 rounded-xl;
+
+    .cash-flow-display-title {
+        @apply text-center text-xl;
+    }
+
+    .cash-flow-display-amount {
+        @apply text-center text-xl ;
+        font-family: Wix;
+    }
+}
+
+.positive {
+    @apply bg-[#679436];
+}
+
+.negative {
+    @apply bg-[#883300]; 
+}

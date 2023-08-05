@@ -1,0 +1,28 @@
+<div class="hidden md:flex justify-between py-4 px-12 bg-white">
+  <div class="flex gap-2 items-center w-full">
+    <img class="max-h-10 cursor-pointer" src="/assets/images/BudgetSandboxIcon.svg" routerLink="/">
+    <div class="text-2xl cursor-pointer" routerLink="/">Budget Sandbox</div>
+  </div>
+  <div class="flex gap-2 justify-end items-center w-full">
+    <div class="nav-text">{{userService.userProfile?.username}}</div>
+  </div>
+</div>
+
+<div class="flex flex-col md:hidden">
+  <div class="flex justify-center gap-2 items-center w-full bg-white p-2">
+    <img class="max-h-10 cursor-pointer" src="/assets/images/BudgetSandboxIcon.svg" routerLink="/">
+    <div class="text-2xl cursor-pointer" routerLink="/">Budget Sandbox</div>
+  </div>
+  <div (click)="toggleMenu()" class="flex justify-center gap-2 items-center w-full bg-[#7f5539] p-2">
+    <i *ngIf="!showMenu" class="fa-solid fa-circle-chevron-down fa-xl text-white"></i>
+    <i *ngIf="showMenu" class="fa-solid fa-circle-chevron-up fa-xl text-white"></i>
+    <div class="text-white">Menu</div>
+  </div>
+  <div *ngIf="showMenu" class="flex flex-col justify-center gap-2 items-center w-full bg-[#a56336] text-white">
+    <div class="side-nav-btn" (click)="toggleMenu()" routerLink="./dashboard">Sandboxes <img class="max-h-6 cursor-pointer" src="/assets/images/BudgetSandboxIconWhite.svg"></div>
+    <div class="side-nav-btn" (click)="toggleMenu()" routerLink="./accounts">Accounts <i class="fa-solid fa-building-columns fa-lg"></i></div>
+    <div class="side-nav-btn" (click)="toggleMenu()" routerLink="./buckets">Buckets <i class="fa-solid fa-bucket fa-lg"></i></div>
+    <div class="side-nav-btn" (click)="toggleMenu()" routerLink="./assets">Assets <i class="fa-solid fa-sack-dollar fa-lg"></i></div>
+    <div class="side-nav-btn" (click)="toggleMenu()" routerLink="./cashflowitems">Cash Flow Items <i class="fa-solid fa-money-check-dollar fa-lg"></i></div>
+  </div>
+</div>

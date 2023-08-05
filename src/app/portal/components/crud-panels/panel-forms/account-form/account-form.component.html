@@ -1,0 +1,53 @@
+<div *ngIf="!positive" class="flex flex-col md:flex-row gap-8 md:items-center mb-8">
+  <div><i class="fa-solid fa-square-minus text-red-800 fa-xl"></i> This is a negative account (credit card account, loan, etc...)</div>
+  <div class="btn-text text-sm" (click)="togglePositive()">Change to positive account</div>
+</div>
+
+<div *ngIf="positive" class="flex flex-col md:flex-row gap-8 md:items-center mb-8">
+  <div><i class="fa-solid fa-square-plus text-green-800 fa-xl"></i> This is a positive account (checking account, savings account, etc...)</div>
+  <div class="btn-text text-sm" (click)="togglePositive()">Change to negative account</div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="emitSave()" class="flex flex-col gap-4 mb-8">
+
+  <div>
+    <div class="form-label">Account Name</div>
+    <div>
+      <input type="text" placeholder="Account name" formControlName="description">
+      <div class="validation-message" *ngIf="form.get('description')?.touched && form.get('description')?.errors?.['required']">Account name is required</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="form-label">Balance</div>
+    <div>
+      <input type="text" placeholder="Balance" formControlName="balanceFormatted" [imask]="currencyFormMaskOptions">
+      <div class="validation-message" *ngIf="form.get('balance')?.touched && form.get('balance')?.errors?.['required']">Balance is required</div>
+    </div>
+  </div>
+
+  <input [style.display]="'none'" type="submit">
+</form>
+
+<div *ngIf="buckets.length > 0">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="flex flex-col gap-4">
+      <div class="balance-container">
+        <div>Account balance after buckets</div>
+        <div class="balance-amount">{{accountBalanceAfterBuckets.toString() | imask:currencyMaskOptions}}</div>
+      </div>
+      <div class="balance-container">
+        <div>Total bucket balance</div>
+        <div class="balance-amount">{{totalBucketBalance.toString() | imask:currencyMaskOptions}}</div>
+      </div>
+    </div>
+    <div class="flex flex-col gap-4">
+      <div class="border-b-2 border-stone-200 text-lg mb-4">Related buckets</div>
+      <div *ngFor="let bucket of buckets" class="bucket-container">
+        <div>{{bucket.bucket}}</div>
+        <div class="balance-amount">{{bucket.balance.toString() | imask:currencyMaskOptions}}</div>
+      </div>
+    </div>
+  </div>
+
+</div>
