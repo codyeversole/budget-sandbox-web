@@ -1,5 +1,5 @@
 services:  
-  budget-sandbox_web:
+  budget_sandbox_web:
     build:
       context: .
     networks:  
